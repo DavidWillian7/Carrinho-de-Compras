@@ -6,7 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.List;
+import java.math.BigDecimal;
 
 @Entity
 @AllArgsConstructor
@@ -19,5 +19,6 @@ public class Carrinho {
     @Column(name = "carrinho_id")
     private Long id;
 
-    private List<Item> itens;
+    private BigDecimal itensPrecoTotal;
+    private BigDecimal frete;
 }
