@@ -23,11 +23,15 @@ public class CarrinhoService {
         this.salvarItens(itens);
         BigDecimal valorFrete = this.calcularFrete(itens);
         BigDecimal descontoFrete = this.aplicarDescontoFrete(itens).multiply(valorFrete);
+        valorFrete = valorFrete.subtract(descontoFrete);
+        valorFrete = valorFrete.setScale(2);
         Carrinho carrinho = new Carrinho();
-        carrinho.setFrete(valorFrete.subtract(descontoFrete));
+        carrinho.setFrete(valorFrete);
         BigDecimal precoTotal = this.calcularPrecoTotal(itens);
         BigDecimal descontoPreco = this.aplicarDescontoPreco(precoTotal);
-        carrinho.setItensPrecoTotal(precoTotal.subtract(descontoPreco));
+        precoTotal = precoTotal.subtract(descontoPreco);
+        precoTotal = precoTotal.setScale(2);
+        carrinho.setItensPrecoTotal(precoTotal);
         return carrinhoRepository.save(carrinho);
     }
 
@@ -62,14 +66,16 @@ public class CarrinhoService {
             }
         }
 
+        BigDecimal auxPeso = new BigDecimal(peso);
+        int parteInteiraPeso = auxPeso.intValue();
         if(peso > 2.0 && peso <= 10.0){
-            BigDecimal aux = BigDecimal.valueOf(2).multiply(BigDecimal.valueOf(peso));
+            BigDecimal aux = BigDecimal.valueOf(2).multiply(BigDecimal.valueOf(parteInteiraPeso));
             valor = valor.add(aux);
         }else if(peso > 10.0 && peso <= 50.0){
-            BigDecimal aux = BigDecimal.valueOf(4).multiply(BigDecimal.valueOf(peso));
+            BigDecimal aux = BigDecimal.valueOf(4).multiply(BigDecimal.valueOf(parteInteiraPeso));
             valor = valor.add(aux);
         }else if(peso > 50.0){
-            BigDecimal aux = BigDecimal.valueOf(7).multiply(BigDecimal.valueOf(peso));
+            BigDecimal aux = BigDecimal.valueOf(7).multiply(BigDecimal.valueOf(parteInteiraPeso));
             valor = valor.add(aux);
         }
 
@@ -88,7 +94,7 @@ public class CarrinhoService {
 
     private BigDecimal aplicarDescontoPreco(BigDecimal valorTotal){
         BigDecimal desconto = BigDecimal.ZERO;
-        if(valorTotal.compareTo(BigDecimal.valueOf(500)) > 0 && valorTotal.compareTo(BigDecimal.valueOf(1000)) < 0){
+        if(valorTotal.compareTo(BigDecimal.valueOf(500)) > 0 && valorTotal.compareTo(BigDecimal.valueOf(1000)) <= 0){
             desconto = desconto.add(BigDecimal.valueOf(0.1).multiply(valorTotal));
         }else if(valorTotal.compareTo(BigDecimal.valueOf(1000)) > 0){
             desconto = desconto.add(BigDecimal.valueOf(0.2).multiply(valorTotal));
