@@ -87,6 +87,7 @@ public class CarrinhoService {
         for(Item item : itens){
             if(item.getQuantidade() >= 2){
                 desconto = BigDecimal.valueOf(0.05);
+                return desconto;
             }
         }
         return desconto;
