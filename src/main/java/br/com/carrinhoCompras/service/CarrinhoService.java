@@ -2,7 +2,6 @@ package br.com.carrinhoCompras.service;
 
 import br.com.carrinhoCompras.model.Carrinho;
 import br.com.carrinhoCompras.model.Item;
-import br.com.carrinhoCompras.repository.CarrinhoRepository;
 import br.com.carrinhoCompras.repository.ItemRepository;
 import org.springframework.stereotype.Service;
 
@@ -11,11 +10,9 @@ import java.util.List;
 
 @Service
 public class CarrinhoService {
-    private final CarrinhoRepository carrinhoRepository;
     private final ItemRepository itemRepository;
 
-    public CarrinhoService(CarrinhoRepository carrinhoRepository, ItemRepository itemRepository) {
-        this.carrinhoRepository = carrinhoRepository;
+    public CarrinhoService(ItemRepository itemRepository) {
         this.itemRepository = itemRepository;
     }
 
@@ -32,7 +29,7 @@ public class CarrinhoService {
         precoTotal = precoTotal.subtract(descontoPreco);
         precoTotal = precoTotal.setScale(2);
         carrinho.setItensPrecoTotal(precoTotal);
-        return carrinhoRepository.save(carrinho);
+        return carrinho;
     }
 
     private BigDecimal calcularPrecoTotal(List<Item> itens) {
@@ -66,7 +63,7 @@ public class CarrinhoService {
             }
         }
 
-        BigDecimal auxPeso = new BigDecimal(peso);
+        BigDecimal auxPeso = BigDecimal.valueOf(peso);
         int parteInteiraPeso = auxPeso.intValue();
         if(peso > 2.0 && peso <= 10.0){
             BigDecimal aux = BigDecimal.valueOf(2).multiply(BigDecimal.valueOf(parteInteiraPeso));
