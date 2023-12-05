@@ -6,6 +6,7 @@ import br.com.carrinhoCompras.repository.ItemRepository;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
 
 @Service
@@ -21,13 +22,13 @@ public class CarrinhoService {
         BigDecimal valorFrete = this.calcularFrete(itens);
         BigDecimal descontoFrete = this.aplicarDescontoFrete(itens).multiply(valorFrete);
         valorFrete = valorFrete.subtract(descontoFrete);
-        valorFrete = valorFrete.setScale(2);
+        valorFrete = valorFrete.setScale(2, RoundingMode.HALF_UP);
         Carrinho carrinho = new Carrinho();
         carrinho.setFrete(valorFrete);
         BigDecimal precoTotal = this.calcularPrecoTotal(itens);
         BigDecimal descontoPreco = this.aplicarDescontoPreco(precoTotal);
         precoTotal = precoTotal.subtract(descontoPreco);
-        precoTotal = precoTotal.setScale(2);
+        precoTotal = precoTotal.setScale(2, RoundingMode.HALF_UP);
         carrinho.setItensPrecoTotal(precoTotal);
         return carrinho;
     }
