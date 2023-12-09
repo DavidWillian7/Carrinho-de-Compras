@@ -453,4 +453,205 @@ class CarrinhoServiceTest {
         assertEquals(BigDecimal.valueOf(1000).setScale(2, RoundingMode.UNNECESSARY), carrinho.getItensPrecoTotal());
         assertEquals(BigDecimal.valueOf(24).setScale(2, RoundingMode.UNNECESSARY), carrinho.getFrete());
     }
+
+    @Test
+    @DisplayName("Cobrar R$2,00 por kg no frete, aplicar desconto de 20% no preço total, aplicar desconto de 5% no frete e acrescentar R$10,00 no frete")
+    void regra21Checkout() {
+        List<Item> itens = new ArrayList<>();
+        for (int i = 1; i <= 5; i++) {
+            int quantidade = (i == 2) ? 2 : 1;
+            double peso = (i == 2) ? 1 : 2;
+            itens.add(new Item(
+                    (long) (i + 1),
+                    "tinta" + (i + 1),
+                    "descrição",
+                    BigDecimal.valueOf(170),
+                    peso,
+                    quantidade,
+                    Item.Tipo.CASA
+            ));
+        }
+
+        when(itemRepository.save(any(Item.class))).thenAnswer(invocation -> invocation.getArgument(0));
+
+        Carrinho carrinho = carrinhoService.checkout(itens);
+
+        assertEquals(BigDecimal.valueOf(816).setScale(2, RoundingMode.UNNECESSARY), carrinho.getItensPrecoTotal());
+        assertEquals(BigDecimal.valueOf(28.5).setScale(2, RoundingMode.UNNECESSARY), carrinho.getFrete());
+    }
+
+    @Test
+    @DisplayName("Cobrar R$4,00 por kg no frete, não aplicar desconto de 10% no preço total e não aplicar desconto de 5% no frete")
+    void regra22Checkout() {
+        Item item = new Item(1L,"TV","descrição", BigDecimal.valueOf(500),10.1,1, Item.Tipo.ELETRONICO);
+        when(itemRepository.save(any(Item.class))).thenReturn(item);
+
+        List<Item> itens = new ArrayList<>();
+        itens.add(new Item(null,"TV","descrição", BigDecimal.valueOf(500),10.1,1, Item.Tipo.ELETRONICO));
+
+        Carrinho carrinho = carrinhoService.checkout(itens);
+
+        assertEquals(BigDecimal.valueOf(500).setScale(2, RoundingMode.UNNECESSARY),carrinho.getItensPrecoTotal());
+        assertEquals(BigDecimal.valueOf(40).setScale(2, RoundingMode.UNNECESSARY), carrinho.getFrete());
+    }
+
+    @Test
+    @DisplayName("Cobrar R$4,00 por kg no frete, não aplicar desconto de 10% no preço total e aplicar desconto de 5% no frete")
+    void regra23Checkout() {
+        Item item = new Item(1L,"TV","descrição", BigDecimal.valueOf(50),24.95,2, Item.Tipo.ELETRONICO);
+        when(itemRepository.save(any(Item.class))).thenReturn(item);
+
+        List<Item> itens = new ArrayList<>();
+        itens.add(new Item(null,"TV","descrição", BigDecimal.valueOf(50),24.95,2, Item.Tipo.ELETRONICO));
+
+        Carrinho carrinho = carrinhoService.checkout(itens);
+
+        assertEquals(BigDecimal.valueOf(100).setScale(2, RoundingMode.UNNECESSARY),carrinho.getItensPrecoTotal());
+        assertEquals(BigDecimal.valueOf(186.2).setScale(2, RoundingMode.UNNECESSARY), carrinho.getFrete());
+    }
+
+    @Test
+    @DisplayName("Cobrar R$4,00 por kg no frete, não aplicar desconto de 10% no preço total, não aplicar desconto de 5% no frete e acrescentar R$10,00 no frete")
+    void regra24Checkout() {
+        List<Item> itens = new ArrayList<>();
+        for (int i = 1; i <= 6; i++) {
+            double peso = (i == 2) ? 5 : 9;
+            itens.add(new Item(
+                    (long) (i + 1),
+                    "livro" + (i + 1),
+                    "descrição",
+                    BigDecimal.valueOf(83.333),
+                    peso,
+                    1,
+                    Item.Tipo.LIVRO
+            ));
+        }
+
+        when(itemRepository.save(any(Item.class))).thenAnswer(invocation -> invocation.getArgument(0));
+
+        Carrinho carrinho = carrinhoService.checkout(itens);
+
+        assertEquals(BigDecimal.valueOf(500).setScale(2, RoundingMode.UNNECESSARY), carrinho.getItensPrecoTotal());
+        assertEquals(BigDecimal.valueOf(210).setScale(2, RoundingMode.UNNECESSARY), carrinho.getFrete());
+    }
+
+    @Test
+    @DisplayName("Cobrar R$4,00 por kg no frete, não aplicar desconto de 10% no preço total, aplicar desconto de 5% no frete e acrescentar R$10,00 no frete")
+    void regra25Checkout() {
+        List<Item> itens = new ArrayList<>();
+        for (int i = 1; i <= 5; i++) {
+            int quantidade = (i == 2) ? 2 : 1;
+            itens.add(new Item(
+                    (long) (i + 1),
+                    "livro" + (i + 1),
+                    "descrição",
+                    BigDecimal.valueOf(66.666),
+                    2.5,
+                    quantidade,
+                    Item.Tipo.LIVRO
+            ));
+        }
+
+        when(itemRepository.save(any(Item.class))).thenAnswer(invocation -> invocation.getArgument(0));
+
+        Carrinho carrinho = carrinhoService.checkout(itens);
+
+        assertEquals(BigDecimal.valueOf(400).setScale(2, RoundingMode.UNNECESSARY), carrinho.getItensPrecoTotal());
+        assertEquals(BigDecimal.valueOf(66.5).setScale(2, RoundingMode.UNNECESSARY), carrinho.getFrete());
+    }
+
+    @Test
+    @DisplayName("Cobrar R$4,00 por kg no frete, aplicar desconto de 10% no preço total e não aplicar desconto de 5% no frete")
+    void regra26Checkout() {
+        Item item = new Item(1L,"TV","descrição", BigDecimal.valueOf(600),13,1, Item.Tipo.ELETRONICO);
+        when(itemRepository.save(any(Item.class))).thenReturn(item);
+
+        List<Item> itens = new ArrayList<>();
+        itens.add(new Item(null,"TV","descrição", BigDecimal.valueOf(600),13,1, Item.Tipo.ELETRONICO));
+
+        Carrinho carrinho = carrinhoService.checkout(itens);
+
+        assertEquals(BigDecimal.valueOf(540).setScale(2, RoundingMode.UNNECESSARY),carrinho.getItensPrecoTotal());
+        assertEquals(BigDecimal.valueOf(52).setScale(2, RoundingMode.UNNECESSARY), carrinho.getFrete());
+    }
+
+    @Test
+    @DisplayName("Cobrar R$4,00 por kg no frete, aplicar desconto de 10% no preço total e aplicar desconto de 5% no frete")
+    void regra27Checkout() {
+        Item item = new Item(1L,"TV","descrição", BigDecimal.valueOf(260),7,2, Item.Tipo.ELETRONICO);
+        when(itemRepository.save(any(Item.class))).thenReturn(item);
+
+        List<Item> itens = new ArrayList<>();
+        itens.add(new Item(null,"TV","descrição", BigDecimal.valueOf(260),7,2, Item.Tipo.ELETRONICO));
+
+        Carrinho carrinho = carrinhoService.checkout(itens);
+
+        assertEquals(BigDecimal.valueOf(468).setScale(2, RoundingMode.UNNECESSARY),carrinho.getItensPrecoTotal());
+        assertEquals(BigDecimal.valueOf(53.2).setScale(2, RoundingMode.UNNECESSARY), carrinho.getFrete());
+    }
+
+    @Test
+    @DisplayName("Cobrar R$4,00 por kg no frete, aplicar desconto de 10% no preço total, não aplicar desconto de 5% no frete e acrescentar R$10,00 no frete")
+    void regra28Checkout() {
+        List<Item> itens = new ArrayList<>();
+        for (int i = 1; i <= 6; i++) {
+            double peso = (i == 2) ? 5 : 9;
+            itens.add(new Item(
+                    (long) (i + 1),
+                    "livro" + (i + 1),
+                    "descrição",
+                    BigDecimal.valueOf(116.666),
+                    peso,
+                    1,
+                    Item.Tipo.LIVRO
+            ));
+        }
+
+        when(itemRepository.save(any(Item.class))).thenAnswer(invocation -> invocation.getArgument(0));
+
+        Carrinho carrinho = carrinhoService.checkout(itens);
+
+        assertEquals(BigDecimal.valueOf(630).setScale(2, RoundingMode.UNNECESSARY), carrinho.getItensPrecoTotal());
+        assertEquals(BigDecimal.valueOf(210).setScale(2, RoundingMode.UNNECESSARY), carrinho.getFrete());
+    }
+
+    @Test
+    @DisplayName("Cobrar R$4,00 por kg no frete, aplicar desconto de 10% no preço total, aplicar desconto de 5% no frete e acrescentar R$10,00 no frete")
+    void regra29Checkout() {
+        List<Item> itens = new ArrayList<>();
+        for (int i = 1; i <= 5; i++) {
+            int quantidade = (i == 2) ? 2 : 1;
+            itens.add(new Item(
+                    (long) (i + 1),
+                    "livro" + (i + 1),
+                    "descrição",
+                    BigDecimal.valueOf(133.333),
+                    5,
+                    quantidade,
+                    Item.Tipo.LIVRO
+            ));
+        }
+
+        when(itemRepository.save(any(Item.class))).thenAnswer(invocation -> invocation.getArgument(0));
+
+        Carrinho carrinho = carrinhoService.checkout(itens);
+
+        assertEquals(BigDecimal.valueOf(720).setScale(2, RoundingMode.UNNECESSARY), carrinho.getItensPrecoTotal());
+        assertEquals(BigDecimal.valueOf(123.5).setScale(2, RoundingMode.UNNECESSARY), carrinho.getFrete());
+    }
+
+    @Test
+    @DisplayName("Cobrar R$4,00 por kg no frete, aplicar desconto de 20% no preço total e não aplicar desconto de 5% no frete")
+    void regra30Checkout() {
+        Item item = new Item(1L,"TV","descrição", BigDecimal.valueOf(2000),40,1, Item.Tipo.ELETRONICO);
+        when(itemRepository.save(any(Item.class))).thenReturn(item);
+
+        List<Item> itens = new ArrayList<>();
+        itens.add(new Item(null,"TV","descrição", BigDecimal.valueOf(2000),40,1, Item.Tipo.ELETRONICO));
+
+        Carrinho carrinho = carrinhoService.checkout(itens);
+
+        assertEquals(BigDecimal.valueOf(1600).setScale(2, RoundingMode.UNNECESSARY),carrinho.getItensPrecoTotal());
+        assertEquals(BigDecimal.valueOf(160).setScale(2, RoundingMode.UNNECESSARY), carrinho.getFrete());
+    }
 }
