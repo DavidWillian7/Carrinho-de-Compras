@@ -19,16 +19,12 @@ mvn test CarrinhoServiceTest
 mvn test
 
 ### Cobertura dos Testes
-A cobertura dos testes pode ser verificada usando um relatório de cobertura. Execute o seguinte comando:
-
-mvn clean verify
+A cobertura dos testes pode ser verificada usando um relatório de cobertura. Execute o seguinte comando: mvn clean verify
 
 ### Estrutura do Projeto
-src/main/java/com/seunome/sobrenome/vendas: Contém as classes principais do projeto.
 Controller: Lida com as requisições HTTP.
 Service: Implementa a lógica de negócio.
-Repository: Simula o acesso a dados (pode ser mockado para testes).
-src/test/java/com/seunome/sobrenome/vendas: Contém classes de teste.
+Repository: Simula o acesso a dados.
 ServiceTest: Testes para a camada de serviço.
 
 ### Casos de Teste
