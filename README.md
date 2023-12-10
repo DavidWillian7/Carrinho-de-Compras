@@ -35,7 +35,7 @@ ServiceTest: Testes para a camada de serviço.
 Os casos de teste estão documentados em um arquivo separado no formato de planilha e podem ser encontrados em: 
 
 ### Componentes do Grupo
-DAVID WILLIAN PEREIRA JATOBÁ
-MARIANA LIMA SILVA
-ALLAN PABLO LOPES DE ARAUJO
-HALINE DIAS SANTOS
+- DAVID WILLIAN PEREIRA JATOBÁ
+- MARIANA LIMA SILVA
+- ALLAN PABLO LOPES DE ARAUJO
+- HALINE DIAS SANTOS
