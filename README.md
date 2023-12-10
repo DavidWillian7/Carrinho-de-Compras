@@ -34,3 +34,4 @@ Os casos de teste estão documentados em um arquivo separado no formato de plani
 - MARIANA LIMA SILVA
 - ALLAN PABLO LOPES DE ARAUJO
 - HALINE DIAS SANTOS
+- VALDEZ MORAES DE SOUSA
