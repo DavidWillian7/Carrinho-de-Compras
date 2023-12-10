@@ -22,10 +22,10 @@ Executar o arquivo CarrinhoServiceTest
 A cobertura dos testes pode ser verificada usando um relatório de cobertura, disponível nos seguintes arquivos Taabela de decisão.xlms e Partições.pptx. 
 
 ### Estrutura do Projeto
-Controller: Lida com as requisições HTTP.
-Service: Implementa a lógica de negócio.
-Repository: Simula o acesso a dados.
-ServiceTest: Testes para a camada de serviço.
+- Controller: Lida com as requisições HTTP.
+- Service: Implementa a lógica de negócio.
+- Repository: Simula o acesso a dados.
+- ServiceTest: Testes para a camada de serviço.
 
 ### Casos de Teste
 Os casos de teste estão documentados em um arquivo separado no formato de planilha e podem ser encontrados em: 
