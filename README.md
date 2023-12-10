@@ -13,13 +13,13 @@ Este projeto é uma API REST desenvolvida em Java + Spring Boot para simular o m
 - Spring Boot Test
 
 ### Executar o Projeto
-mvn test CarrinhoServiceTest
+Executar o arquivo CarrinhoDeComprasApplication
 
 ### Executar Testes
-mvn test
+Executar o arquivo CarrinhoServiceTest
 
 ### Cobertura dos Testes
-A cobertura dos testes pode ser verificada usando um relatório de cobertura. Execute o seguinte comando: mvn clean verify
+A cobertura dos testes pode ser verificada usando um relatório de cobertura, disponível nos seguintes arquivos Taabela de decisão.xlms e Partições.pptx. 
 
 ### Estrutura do Projeto
 Controller: Lida com as requisições HTTP.
